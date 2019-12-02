@@ -2,10 +2,9 @@ package org.acme.conference.session;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.acme.conference.session.SessionFakeFactory.*;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +12,6 @@ import org.junit.jupiter.api.Test;
  * SessionStore
  */
 public class SessionStoreTest {
-
-  private static final String DEFAULT_ID = "ID";
-
-  private static final int DEFAULT_SCHEDULE = 101;
 
   private SessionStore store;
 
@@ -75,12 +70,6 @@ public class SessionStoreTest {
     assertNotNull(result);
     assertEquals(DEFAULT_ID, result.getId());
     assertEquals(0, sessionsRepo.size());
-  }
-
-  private Session composeSession() {
-    Session session = new Session();
-    session.setId(DEFAULT_ID);
-    return session;
   }
   
 }

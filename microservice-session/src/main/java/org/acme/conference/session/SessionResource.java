@@ -1,5 +1,7 @@
 package org.acme.conference.session;
 
+import java.util.Collection;
+import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,8 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.Optional;
 
 /**
  * SessionResource
@@ -35,14 +35,14 @@ public class SessionResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Session createSession(final Session session) throws Exception {
+    public Session createSession (final Session session) {
         return sessionStore.save(session);
     }
 
     @GET
     @Path("/{sessionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveSession(@PathParam("sessionId") final String sessionId) throws Exception {
+    public Response retrieveSession (@PathParam("sessionId") final String sessionId) {
         final Optional<Session> result = sessionStore.findById(sessionId);
 
         return result
@@ -54,7 +54,7 @@ public class SessionResource {
     @Path("/{sessionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) throws Exception {
+    public Response updateSession (@PathParam("sessionId") final String sessionId, final Session session) {
         final Optional<Session> updated = sessionStore.updateById(sessionId, session);
         return updated
             .map(s -> Response.ok(s).build())
@@ -63,7 +63,7 @@ public class SessionResource {
 
     @DELETE
     @Path("/{sessionId}")
-    public Response deleteSession(@PathParam("sessionId") final String sessionId) throws Exception {
+    public Response deleteSession (@PathParam("sessionId") final String sessionId) {
         final Optional<Session> removed = sessionStore.deleteById(sessionId);
         return removed
             .map(s-> Response.noContent().build())
@@ -73,7 +73,7 @@ public class SessionResource {
     @GET
     @Path("/{sessionId}/speakers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) throws Exception {
+    public Response sessionSpeakers (@PathParam("sessionId") final String sessionId) {
 
         final Optional<Session> session = sessionStore.findById(sessionId);
 

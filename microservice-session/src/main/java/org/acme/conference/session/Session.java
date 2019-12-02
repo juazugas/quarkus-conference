@@ -1,7 +1,7 @@
 package org.acme.conference.session;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * Session entity
@@ -13,7 +13,7 @@ public class Session {
 
   private int schedule;
 
-  private Collection<String> speakers = Collections.emptySet();
+    private Collection<String> speakers = new HashSet<>();
 
   /**
    * @return the id
