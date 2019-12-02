@@ -25,14 +25,13 @@ public class SessionResourceTest {
     }
 
     @Test
-    public void testCreateSession() {
+    public void testCreateSession () {
         Session session = composeSession();
-        given()
-            .when()
+        given().when()
                 .body(session)
                 .contentType("application/json")
                 .post("/sessions")
-            .then()
+                .then()
                 .statusCode(200)
                 .contentType("application/json")
                 .body("id", equalTo(DEFAULT_ID));

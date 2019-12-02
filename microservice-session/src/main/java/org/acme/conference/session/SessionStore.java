@@ -9,11 +9,10 @@ import javax.transaction.Transactional;
 @ApplicationScoped
 public class SessionStore {
 
+    @Inject
     private SessionRepository repository;
 
-    @Inject
-    public SessionStore(SessionRepository sessionRepository) {
-        this.repository = sessionRepository;
+    public SessionStore() {
     }
 
     public Collection<Session> findAll () {
@@ -34,9 +33,14 @@ public class SessionStore {
             return Optional.empty();
         }
 
-        sessionOld.get()
-                .setSchedule(session.getSchedule());
-        repository.persist(sessionOld.get());
+        sessionOld.ifPresent(s -> {
+            s.setSchedule(session.getSchedule());
+            s.getSpeakers()
+                    .clear();
+            s.getSpeakers()
+                    .addAll(session.getSpeakers());
+            repository.persist(s);
+        });
         return Optional.ofNullable(session);
     }
 

@@ -2,7 +2,10 @@ package org.acme.conference.session;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
@@ -20,8 +23,8 @@ public class Session {
 
     private int schedule;
 
-    @OneToMany(targetEntity = Speaker.class, mappedBy = "name")
-    private Collection<String> speakers = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Collection<Speaker> speakers = new HashSet<>();
 
   /**
    * @return the id
@@ -54,14 +57,14 @@ public class Session {
   /**
    * @return the speakers
    */
-    public Collection<String> getSpeakers () {
+    public Collection<Speaker> getSpeakers () {
     return speakers;
   }
 
   /**
    * @param speakers the speakers to set
    */
-    public void setSpeakers (Collection<String> speakers) {
+    public void setSpeakers (Collection<Speaker> speakers) {
     this.speakers = speakers;
   }
   
