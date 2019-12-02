@@ -1,4 +1,4 @@
-package org.acme.conference;
+package org.acme.conference.session;
 
 import io.quarkus.test.junit.NativeImageTest;
 
