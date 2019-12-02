@@ -2,17 +2,25 @@ package org.acme.conference.session;
 
 import java.util.Collection;
 import java.util.HashSet;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Session entity
  * 
  */
+@Entity
 public class Session {
 
-  private String id;
+    @Id
+    @NotBlank
+    private String id;
 
-  private int schedule;
+    private int schedule;
 
+    @OneToMany(targetEntity = Speaker.class, mappedBy = "name")
     private Collection<String> speakers = new HashSet<>();
 
   /**
@@ -46,14 +54,14 @@ public class Session {
   /**
    * @return the speakers
    */
-  public Collection<String> getSpeakers() {
+    public Collection<String> getSpeakers () {
     return speakers;
   }
 
   /**
    * @param speakers the speakers to set
    */
-  public void setSpeakers(Collection<String> speakers) {
+    public void setSpeakers (Collection<String> speakers) {
     this.speakers = speakers;
   }
   

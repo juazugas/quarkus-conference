@@ -2,7 +2,6 @@ package org.acme.conference.session;
 
 import java.util.Collection;
 import java.util.Optional;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -10,45 +9,51 @@ import javax.transaction.Transactional;
 @ApplicationScoped
 public class SessionStore {
 
-  private SessionRepository repository;
+    private SessionRepository repository;
 
-  @Inject 
-  public SessionStore(SessionRepository sessionRepository) {
-    this.repository = sessionRepository;
-  }
-
-	public Collection<Session> findAll() {
-		return repository.findAll();
-	}
-
-  @Transactional
-	public Session save(Session session) {
-    repository.persist(session);
-    return session;
-	}
-
-  @Transactional
-	public Optional<Session> updateById(String sessionId, Session session) {
-    Optional<Session> sessionOld = findById(sessionId);
-    if (!sessionOld.isPresent()) {
-      return Optional.empty();
+    @Inject
+    public SessionStore(SessionRepository sessionRepository) {
+        this.repository = sessionRepository;
     }
 
-    repository.persist(session);
-		return Optional.ofNullable(session);
-	}
-
-	public Optional<Session> findById(String sessionId) {
-    return repository.find("id", sessionId);
-	}
-
-	public Optional<Session> deleteById(String sessionId) {
-    Optional<Session> session = findById(sessionId);
-    if (!session.isPresent()) {
-      return Optional.empty();
+    public Collection<Session> findAll () {
+        return repository.findAll()
+                .list();
     }
-    repository.delete(session.get());
-		return session;
-	}
+
+    @Transactional
+    public Session save (Session session) {
+        repository.persist(session);
+        return session;
+    }
+
+    @Transactional
+    public Optional<Session> updateById (String sessionId, Session session) {
+        Optional<Session> sessionOld = findById(sessionId);
+        if (!sessionOld.isPresent()) {
+            return Optional.empty();
+        }
+
+        sessionOld.get()
+                .setSchedule(session.getSchedule());
+        repository.persist(sessionOld.get());
+        return Optional.ofNullable(session);
+    }
+
+    public Optional<Session> findById (String sessionId) {
+        return repository.find("id", sessionId)
+                .stream()
+                .findFirst();
+    }
+
+    @Transactional
+    public Optional<Session> deleteById (String sessionId) {
+        Optional<Session> session = findById(sessionId);
+        if (!session.isPresent()) {
+            return Optional.empty();
+        }
+        repository.delete(session.get());
+        return session;
+    }
 
 }

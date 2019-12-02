@@ -12,6 +12,9 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 public class SessionResourceTest {
 
+    private static final String SESSION_ID = "s-1-1";
+    private static final String OTHER_SESSION_ID = "s-1-2";
+
     @Test
     public void testGetAllSessionsEndpoint () {
         given().when()
@@ -20,7 +23,7 @@ public class SessionResourceTest {
                 .statusCode(200)
                 .body(startsWith("["), endsWith("]"));
     }
-    
+
     @Test
     public void testCreateSession() {
         Session session = composeSession();
@@ -38,33 +41,34 @@ public class SessionResourceTest {
     @Test
     public void testRetrieveSession () {
         given().when()
-                .get("/sessions/" + DEFAULT_ID)
+                .get("/sessions/" + SESSION_ID)
                 .then()
                 .statusCode(200)
                 .contentType("application/json")
-                .body("id", equalTo(DEFAULT_ID));
+                .body("id", equalTo(SESSION_ID));
     }
 
     @Test
     public void testUpdateSession () {
         final int ANOTHER_SCHEDULE = 3;
-        Session session = composeSession();
+        Session session = new Session();
+        session.setId(SESSION_ID);
         session.setSchedule(ANOTHER_SCHEDULE);
         given().when()
                 .body(session)
                 .contentType("application/json")
-                .put("/sessions/" + DEFAULT_ID)
+                .put("/sessions/" + SESSION_ID)
                 .then()
                 .statusCode(200)
                 .contentType("application/json")
-                .body("id", equalTo(DEFAULT_ID))
+                .body("id", equalTo(SESSION_ID))
                 .body("schedule", equalTo(ANOTHER_SCHEDULE));
     }
 
     @Test
     public void testDeleteSession () {
         given().when()
-                .delete("/sessions/" + DEFAULT_ID)
+                .delete("/sessions/" + OTHER_SESSION_ID)
                 .then()
                 .statusCode(204);
     }
