@@ -71,4 +71,8 @@ public class Schedule extends PanacheEntityBase {
         this.duration = duration;
     }
 
+    @Override
+    public String toString () {
+        return Schedule.class.getName() + "[id=" + this.id + "]";
+    }
 }
