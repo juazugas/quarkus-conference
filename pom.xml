@@ -42,6 +42,7 @@
 
   <modules>
     <module>microservice-session</module>
+    <module>microservice-schedule</module>
   </modules>
 
   <build>
