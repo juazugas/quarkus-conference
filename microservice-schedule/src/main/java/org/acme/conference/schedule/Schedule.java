@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 /**
  * Representation of the entity Schedule
@@ -15,7 +16,7 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class Schedule {
+public class Schedule extends PanacheEntityBase {
 
     @Id
     @GeneratedValue

@@ -46,7 +46,7 @@ public class ScheduleResource {
 
     @GET
     @Path("/{id}")
-    public Response retrieve (@PathParam("id") final String id) {
+    public Response retrieve (@PathParam("id") final int id) {
         return scheduleDAO.findById(id)
                 .map(schedule -> Response.ok(schedule)
                         .build())
@@ -64,7 +64,7 @@ public class ScheduleResource {
 
     @GET
     @Path("/venue/{venueId}")
-    public Response allForVenue (@PathParam("venueId") final String venueId) {
+    public Response allForVenue (@PathParam("venueId") final int venueId) {
         final List<Schedule> schedulesByVenue = scheduleDAO.findByVenue(venueId);
         final GenericEntity<List<Schedule>> entity = buildEntity(schedulesByVenue);
         return Response.ok(entity)
@@ -96,10 +96,14 @@ public class ScheduleResource {
 
     @DELETE
     @Path("/{scheduleId}")
-    public Response remove (@PathParam("scheduleId") final String scheduleId) {
-        scheduleDAO.deleteSchedule(scheduleId);
-        return Response.noContent()
+    public Response remove (@PathParam("scheduleId") final int scheduleId) {
+        boolean deleted = scheduleDAO.deleteSchedule(scheduleId);
+        if (deleted) {
+            return Response.noContent()
                 .build();
+        } else {
+            throw new NotFoundException();
+        }
     }
 
     private GenericEntity<List<Schedule>> buildEntity (final List<Schedule> scheduleList) {

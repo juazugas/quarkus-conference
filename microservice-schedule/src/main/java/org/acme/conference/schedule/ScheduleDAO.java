@@ -1,10 +1,10 @@
 package org.acme.conference.schedule;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
+import javax.transaction.Transactional;
 
 /**
  * @author jzuriaga
@@ -13,34 +13,42 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ScheduleDAO {
 
+    @Transactional
     public Schedule addSchedule (Schedule schedule) {
-        // TODO Auto-generated method stub
-        return new Schedule();
+        schedule.persist();
+        return schedule;
     }
 
-    public Optional<Schedule> findById (String id) {
-        // TODO Auto-generated method stub
-        return Optional.empty();
+    public Optional<Schedule> findById (int id) {
+        Schedule schedule = Schedule.find("id", id)
+                .firstResult();
+        return Optional.ofNullable(schedule);
     }
 
     public List<Schedule> getAllSchedules () {
-        // TODO Auto-generated method stub
-        return Collections.emptyList();
+        return Schedule.findAll()
+                .list();
     }
 
-    public List<Schedule> findByVenue (String venueId) {
-        // TODO Auto-generated method stub
-        return Collections.emptyList();
+    public List<Schedule> findByVenue (int venueId) {
+        return Schedule.find("venueId", venueId)
+                .list();
     }
 
-    public List<Schedule> findByDate (LocalDate localDate) {
-        // TODO Auto-generated method stub
-        return Collections.emptyList();
+    public List<Schedule> findByDate (LocalDate date) {
+        return Schedule.find("date", date)
+                .list();
     }
 
-    public void deleteSchedule (String scheduleId) {
-        // TODO Auto-generated method stub
-
+    @Transactional
+    public boolean deleteSchedule (int id) {
+        Optional<Schedule> schedule = findById(id);
+        if (schedule.isPresent()) {
+            schedule.get()
+                    .delete();
+            return true;
+        }
+        return false;
     }
 
 }
