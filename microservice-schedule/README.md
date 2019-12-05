@@ -1,0 +1,1 @@
+mvn io.quarkus:quarkus-maven-plugin:1.0.1.Final:create     -DprojectGroupId=org.acme.conference     -DprojectArtifactId=microservice-schedule     -DclassName="org.acme.conference.schedule.ScheduleResource"     -Dpath="/schedule"     -Dextensions="resteasy-jsonb"
