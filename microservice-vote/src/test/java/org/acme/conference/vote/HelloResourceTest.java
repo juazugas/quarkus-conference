@@ -1,13 +1,12 @@
 package org.acme.conference.vote;
 
-import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import org.junit.jupiter.api.Test;
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class VoteResourceTest {
+public class HelloResourceTest {
 
     @Test
     public void testHelloEndpoint() {
@@ -15,7 +14,7 @@ public class VoteResourceTest {
           .when().get("/hello")
           .then()
              .statusCode(200)
-             .body(is("hello"));
+                .body(is("Hello from Microservice Session Vote Application"));
     }
 
 }
