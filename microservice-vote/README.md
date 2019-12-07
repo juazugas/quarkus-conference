@@ -1,0 +1,1 @@
+mvn io.quarkus:quarkus-maven-plugin:1.0.1.Final:create -DprojectGroupId=org.acme.conference -DprojectArtifactId=microservice-vote -Dextensions="resteasy-jsonb" -DclassName="org.acme.conference.vote.VoteResource" -DoutputDirectory=. 
