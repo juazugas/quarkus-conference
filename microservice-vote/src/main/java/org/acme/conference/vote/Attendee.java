@@ -2,7 +2,9 @@ package org.acme.conference.vote;
 
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import org.bson.codecs.pojo.annotations.BsonId;
+import io.quarkus.mongodb.panache.MongoEntity;
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
 
 /**
  * Attendee entity
@@ -10,20 +12,21 @@ import javax.validation.constraints.NotNull;
  * @author jzuriaga
  *
  */
-public class Attendee {
+@MongoEntity(collection = "Attendee")
+public class Attendee extends PanacheMongoEntity {
 
-    @NotNull
-    private Long id;
+    @BsonId
+    private String uuid;
 
     @NotBlank
     private String name;
 
-    public Long getId () {
-        return id;
+    public String getId () {
+        return uuid;
     }
 
-    public void setId (Long id) {
-        this.id = id;
+    public void setId (String id) {
+        this.uuid = id;
     }
 
     public String getName () {
@@ -36,14 +39,14 @@ public class Attendee {
 
     @Override
     public String toString () {
-        return "Attendee [id=" + id + ", name=" + name + "]";
+        return "Attendee [id=" + uuid + ", name=" + name + "]";
     }
 
     @Override
     public int hashCode () {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -57,9 +60,7 @@ public class Attendee {
         if (getClass() != obj.getClass())
             return false;
         Attendee other = (Attendee) obj;
-        if (!Objects.equals(this.id, other.id))
-            return false;
-        if (!Objects.equals(this.name, other.name))
+        if (!Objects.equals(this.uuid, other.uuid) || !Objects.equals(this.name, other.name))
             return false;
         return true;
     }
