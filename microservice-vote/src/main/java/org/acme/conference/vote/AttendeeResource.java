@@ -38,7 +38,7 @@ public class AttendeeResource {
 
     @PUT
     @Path("{id}")
-    public Attendee updateAttendee (@PathParam("id") Long id, Attendee attendee) {
+    public Attendee updateAttendee (@PathParam("id") String id, Attendee attendee) {
         
         return attendeeDAO.update(id, attendee)
                 .orElseThrow(NotFoundException::new);
@@ -51,14 +51,14 @@ public class AttendeeResource {
 
     @GET
     @Path("{id}")
-    public Attendee getAttendee (@PathParam("id") Long id) {
+    public Attendee getAttendee (@PathParam("id") String id) {
         return attendeeDAO.get(id)
                 .orElseThrow(NotFoundException::new);
     }
 
     @DELETE
     @Path("{id}")
-    public Response deleteAttendee (@PathParam("id") Long id) {
+    public Response deleteAttendee (@PathParam("id") String id) {
         return attendeeDAO.get(id)
                 .filter(attendeeDAO::delete)
                 .map(a -> Response.noContent()

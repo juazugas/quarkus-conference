@@ -24,13 +24,16 @@ public class AttendeeDAO {
         return store.save(attendee);
     }
 
-    public Optional<Attendee> update (final Long id, @NotNull final Attendee attendee) {
+    public Optional<Attendee> update (final String id, @NotNull final Attendee attendee) {
         Optional<Attendee> original = get(id);
-        original.ifPresent(a -> a.setName(attendee.getName()));
+        original.ifPresent(a -> {
+            a.setName(attendee.getName());
+            a.update();
+        });
         return original;
     }
 
-    public Optional<Attendee> get (final Long id) {
+    public Optional<Attendee> get (final String id) {
         return store.findById(id);
     }
 
