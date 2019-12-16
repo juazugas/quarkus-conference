@@ -3,7 +3,6 @@ package org.acme.conference.vote;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import org.bson.codecs.pojo.annotations.BsonId;
-import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
 
 /**
@@ -12,7 +11,6 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
  * @author jzuriaga
  *
  */
-@MongoEntity(collection = "Attendee")
 public class Attendee extends PanacheMongoEntity {
 
     @BsonId
