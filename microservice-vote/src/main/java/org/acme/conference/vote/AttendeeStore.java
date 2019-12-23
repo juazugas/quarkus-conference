@@ -20,8 +20,7 @@ public class AttendeeStore {
     }
 
     public Optional<Attendee> findById (String id) {
-        return Optional.ofNullable(Attendee.find("_id", id)
-                .firstResult());
+        return Optional.ofNullable(Attendee.findById(id));
     }
 
     public Set<Attendee> findAll () {

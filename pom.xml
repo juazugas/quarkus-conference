@@ -24,6 +24,7 @@
     <surefire-plugin.version>2.22.2</surefire-plugin.version>
 
     <quarkus.platform.version>1.1.0.Final</quarkus.platform.version>
+    <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
 
     <quarkus-plugin.version>${quarkus.platform.version}</quarkus-plugin.version>
   </properties>
@@ -32,7 +33,7 @@
     <dependencies>
       <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-universe-bom</artifactId>
+        <artifactId>${quarkus.platform.artifact-id}</artifactId>
         <version>${quarkus.platform.version}</version>
         <type>pom</type>
         <scope>import</scope>

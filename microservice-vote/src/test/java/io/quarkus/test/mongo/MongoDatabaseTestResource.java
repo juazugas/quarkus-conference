@@ -1,6 +1,3 @@
-/**
- * 
- */
 package io.quarkus.test.mongo;
 
 import java.io.IOException;
@@ -79,7 +76,5 @@ public class MongoDatabaseTestResource implements QuarkusTestResourceLifecycleMa
             }
         }
     }
-
-
 
 }
