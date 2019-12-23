@@ -5,12 +5,11 @@ import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import java.util.Collections;
-import java.util.UUID;
 import javax.inject.Inject;
-import org.bson.Document;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.mongo.MongoDatabaseTestResource;
@@ -24,7 +23,19 @@ public class AttendeeResourceTest {
     private static final String ATTENDEE_DEFAULT_NAME = "Default Name";
 
     @Inject
-    MongoClient mongoClient;
+    private MongoClient mongoClient;
+    
+    private AttendeeDataForgery attendeeForge;
+    
+    @BeforeEach
+    public void setUp() {
+        attendeeForge = new AttendeeDataForgery(mongoClient);
+    }
+    
+    @AfterEach
+    public void tearDown() {
+        attendeeForge.deleteAll();
+    }
 
     @Test
     public void testCreateEndpoint () {
@@ -36,8 +47,6 @@ public class AttendeeResourceTest {
                 .statusCode(200)
                 .body("name", equalTo(ATTENDEE_NAME))
                 .body("id", not(emptyString()));
-
-        deleteAll();
     }
 
     @Test
@@ -53,28 +62,24 @@ public class AttendeeResourceTest {
                 .statusCode(200)
                 .body("id", equalTo(attendee.getId()))
                 .body("name", equalTo(ATTENDEE_NAME));
-
-        deleteAll();
     }
 
     @Test
     public void testGetAllEndpoint () {
         Attendee attendee = createDefault();
-        Attendee attendeeNamed = createWithName("With Name");
+        Attendee attendeeNamed = attendeeForge.createWithName("With Name");
 
         given().when()
                 .get("/attendee")
                 .then()
                 .statusCode(200)
                 .body("size()", equalTo(2));
-
-        deleteAll();
     }
 
     @Test
     public void testGetEndpoint () {
         final String ATT_GETWITH_NAME = "GetWith Name";
-        Attendee attendee = createWithName(ATT_GETWITH_NAME);
+        Attendee attendee = attendeeForge.createWithName(ATT_GETWITH_NAME);
 
         given().when()
                 .get("/attendee/" + attendee.getId())
@@ -82,8 +87,6 @@ public class AttendeeResourceTest {
                 .statusCode(200)
                 .body("id", equalTo(attendee.getId()))
                 .body("name", equalTo(ATT_GETWITH_NAME));
-
-        deleteAll();
     }
 
     @Test
@@ -105,25 +108,4 @@ public class AttendeeResourceTest {
                 .as(Attendee.class);
     }
 
-    private Attendee createWithName (String name) {
-        MongoCollection collection = getCollection();
-        Document doc = new Document().append("_id", UUID.randomUUID()
-                .toString())
-                .append("name", name);
-        collection.insertOne(doc);
-        Attendee attendee = new Attendee();
-        attendee.setId(doc.getString("_id"));
-        attendee.setName(doc.getString("name"));
-        return attendee;
-    }
-
-    private MongoCollection getCollection () {
-        MongoCollection collection = mongoClient.getDatabase("votes")
-                .getCollection("Attendee");
-        return collection;
-    }
-
-    private void deleteAll () {
-        getCollection().deleteMany(new Document());
-    }
 }
