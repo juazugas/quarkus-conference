@@ -31,7 +31,7 @@ public class RatingResource {
         
         validateAttendee(attendeeId);
 
-        SessionRating rating = SessionRatingDAO.rateSession(sessionRating);
+        SessionRating rating = sessionRatingDAO.rateSession(sessionRating);
         return rating;
     }
 

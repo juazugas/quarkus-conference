@@ -3,11 +3,15 @@ package org.acme.conference.vote;
 import java.util.Collection;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
+import org.bson.types.ObjectId;
 
 @ApplicationScoped
 public class SessionRatingDAO {
 
-    public static SessionRating rateSession (SessionRating sessionRating) {
+    private final RatingIdGenerator generator = new RatingIdGenerator();
+
+    public SessionRating rateSession (SessionRating sessionRating) {
+        sessionRating.setRatingId(generator.nextValue());
         sessionRating.persist();
         return sessionRating;
     }
@@ -27,6 +31,14 @@ public class SessionRatingDAO {
 
     public void delete (SessionRating rating) {
         rating.delete();
+    }
+    
+    private static class RatingIdGenerator {
+
+        public String nextValue () {
+            return new ObjectId().toHexString();
+        }
+
     }
 
 }
