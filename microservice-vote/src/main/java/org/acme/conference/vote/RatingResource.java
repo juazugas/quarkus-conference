@@ -2,7 +2,6 @@ package org.acme.conference.vote;
 
 import java.util.Collection;
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,27 +18,26 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class RatingResource {
     
-    @Inject
-    private SessionRatingDAO sessionRatingDAO;
+    private final SessionRatingDAO sessionRatingDAO;
+    
+    private final AttendeeRequestValidator attendeeValidator;
     
     @Inject
-    private AttendeeDAO attendeeDAO;
+    public RatingResource (final SessionRatingDAO sessionRatingDAO, final AttendeeDAO attendeeDAO) {
+        this.sessionRatingDAO = sessionRatingDAO;
+        attendeeValidator = new AttendeeRequestValidator(attendeeDAO);
+    }
 
     @POST
     public SessionRating rateSession(SessionRating sessionRating) {
         String attendeeId = sessionRating.getAttendeeId();
         
-        validateAttendee(attendeeId);
+        attendeeValidator.validate(attendeeId);
 
         SessionRating rating = sessionRatingDAO.rateSession(sessionRating);
         return rating;
     }
 
-    private Attendee validateAttendee (String attendeeId) {
-        return attendeeDAO.get(attendeeId)
-                .orElseThrow(() -> new BadRequestException("Invalid attendee id: " + attendeeId));
-    }
-    
     @GET
     public Collection<SessionRating> getAllSessionRatings() {
         return sessionRatingDAO.getAllRatings();
@@ -51,7 +49,7 @@ public class RatingResource {
         SessionRating original = getRating(ratingId);
         original.setSession(newRating.getSession());
         original.setRating(newRating.getRating());
-        Attendee attendee = validateAttendee(newRating.getAttendeeId());
+        Attendee attendee = attendeeValidator.validate(newRating.getAttendeeId());
         original.setAttendeeId(attendee.getId());
 
         SessionRating updated = sessionRatingDAO.updateRating(original);

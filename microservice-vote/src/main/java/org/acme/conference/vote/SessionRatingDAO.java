@@ -33,6 +33,14 @@ public class SessionRatingDAO {
         rating.delete();
     }
     
+    public Collection<SessionRating> getRatingsBySession (String sessionId) {
+        return SessionRating.find("session", sessionId).list();
+    }
+
+    public Collection<SessionRating> getRatingsByAttendee (String attendeeId) {
+        return SessionRating.find("attendeeId", attendeeId).list();
+    }
+
     private static class RatingIdGenerator {
 
         public String nextValue () {
