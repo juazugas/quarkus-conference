@@ -6,54 +6,54 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
 
 
 public class SessionRating extends PanacheMongoEntity {
-    
+
     private String ratingId;
 
     @NotNull
     private String session;
-    
+
     @NotNull
     private String attendeeId;
 
     private int rating;
 
-    public String getRatingId() {
+    public String getRatingId () {
         return ratingId;
     }
 
-    public void setRatingId(String id) {
+    public void setRatingId (String id) {
         this.ratingId = id;
     }
 
-    public String getSession() {
+    public String getSession () {
         return session;
     }
 
-    public void setSession(String session) {
+    public void setSession (String session) {
         this.session = session;
     }
 
-    public String getAttendeeId() {
+    public String getAttendeeId () {
         return attendeeId;
     }
 
-    public void setAttendeeId(String attendeeId) {
+    public void setAttendeeId (String attendeeId) {
         this.attendeeId = attendeeId;
     }
 
-    public int getRating() {
+    public int getRating () {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating (int rating) {
         this.rating = rating;
     }
-    
+
     @Override
     public int hashCode () {
         return Objects.hash(attendeeId, session, ratingId);
     }
-    
+
     @Override
     public boolean equals (Object obj) {
         if (this == obj)
@@ -82,14 +82,20 @@ public class SessionRating extends PanacheMongoEntity {
             return false;
         return true;
     }
-    
+
     @Override
     public String toString () {
-        return new StringBuilder(this.getClass().getSimpleName())
-                .append(" [")
-                .append("ratingId=").append(ratingId).append(", ")
-                .append("session=").append(session).append(", ")
-                .append("attendeeId=").append(attendeeId)
-                .append("]").toString();
+        return new StringBuilder(this.getClass()
+                .getSimpleName()).append(" [")
+                        .append("ratingId=")
+                        .append(ratingId)
+                        .append(", ")
+                        .append("session=")
+                        .append(session)
+                        .append(", ")
+                        .append("attendeeId=")
+                        .append(attendeeId)
+                        .append("]")
+                        .toString();
     }
 }

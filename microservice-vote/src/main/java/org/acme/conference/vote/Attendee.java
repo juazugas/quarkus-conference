@@ -42,7 +42,7 @@ public class Attendee extends PanacheMongoEntity {
 
     @Override
     public int hashCode () {
-        return Objects.hash(uuid,name);
+        return Objects.hash(uuid, name);
     }
 
     @Override

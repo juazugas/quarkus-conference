@@ -24,16 +24,16 @@ public class AttendeeResourceTest {
 
     @Inject
     private MongoClient mongoClient;
-    
+
     private AttendeeDataForgery attendeeForge;
-    
+
     @BeforeEach
-    public void setUp() {
+    public void setUp () {
         attendeeForge = new AttendeeDataForgery(mongoClient);
     }
-    
+
     @AfterEach
-    public void tearDown() {
+    public void tearDown () {
         attendeeForge.deleteAll();
     }
 

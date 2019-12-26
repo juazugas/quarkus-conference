@@ -17,7 +17,8 @@ public class SessionRatingDAO {
     }
 
     public Collection<SessionRating> getAllRatings () {
-        return SessionRating.findAll().list();
+        return SessionRating.findAll()
+                .list();
     }
 
     public SessionRating updateRating (SessionRating updated) {
@@ -26,19 +27,22 @@ public class SessionRatingDAO {
     }
 
     public Optional<SessionRating> getByRatingId (String ratingId) {
-        return SessionRating.find("ratingId", ratingId).firstResultOptional();
+        return SessionRating.find("ratingId", ratingId)
+                .firstResultOptional();
     }
 
     public void delete (SessionRating rating) {
         rating.delete();
     }
-    
+
     public Collection<SessionRating> getRatingsBySession (String sessionId) {
-        return SessionRating.find("session", sessionId).list();
+        return SessionRating.find("session", sessionId)
+                .list();
     }
 
     public Collection<SessionRating> getRatingsByAttendee (String attendeeId) {
-        return SessionRating.find("attendeeId", attendeeId).list();
+        return SessionRating.find("attendeeId", attendeeId)
+                .list();
     }
 
     private static class RatingIdGenerator {

@@ -9,11 +9,11 @@ import io.quarkus.test.junit.QuarkusTest;
 public class HelloResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
-        given()
-          .when().get("/hello")
-          .then()
-             .statusCode(200)
+    public void testHelloEndpoint () {
+        given().when()
+                .get("/hello")
+                .then()
+                .statusCode(200)
                 .body(is("Hello from Microservice Session Vote Application"));
     }
 

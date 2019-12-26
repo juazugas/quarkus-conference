@@ -20,26 +20,26 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class RatingStatsResource {
-    
+
     private final SessionRatingDAO sessionRatingDAO;
 
     private final AttendeeRequestValidator attendeeValidator;
-    
+
     @Inject
-    public RatingStatsResource (SessionRatingDAO sessionRatingDAO, AttendeeDAO attendeeDAO) {
+    public RatingStatsResource(SessionRatingDAO sessionRatingDAO, AttendeeDAO attendeeDAO) {
         this.sessionRatingDAO = sessionRatingDAO;
         this.attendeeValidator = new AttendeeRequestValidator(attendeeDAO);
     }
-    
+
     @GET
     @Path("/ratingsBySession")
-    public Collection<SessionRating> allSessionVotes(@QueryParam("sessionId") String sessionId) {
+    public Collection<SessionRating> allSessionVotes (@QueryParam("sessionId") String sessionId) {
         return sessionRatingDAO.getRatingsBySession(sessionId);
     }
 
     @GET
     @Path("/averageRatingBySession")
-    public double sessionRatingAverage(@QueryParam("sessionId") String sessionId) {
+    public double sessionRatingAverage (@QueryParam("sessionId") String sessionId) {
         return allSessionVotes(sessionId).stream()
                 .map(SessionRating::getRating)
                 .mapToDouble(Double::valueOf)
@@ -49,7 +49,7 @@ public class RatingStatsResource {
 
     @GET
     @Path("/ratingsByAttendee")
-    public Collection<SessionRating> votesByAttendee(@QueryParam("attendeeId") String attendeeId) {
+    public Collection<SessionRating> votesByAttendee (@QueryParam("attendeeId") String attendeeId) {
         attendeeValidator.validate(attendeeId);
         return sessionRatingDAO.getRatingsByAttendee(attendeeId);
     }

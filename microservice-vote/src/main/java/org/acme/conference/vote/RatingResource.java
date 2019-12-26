@@ -17,21 +17,21 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RatingResource {
-    
+
     private final SessionRatingDAO sessionRatingDAO;
-    
+
     private final AttendeeRequestValidator attendeeValidator;
-    
+
     @Inject
-    public RatingResource (final SessionRatingDAO sessionRatingDAO, final AttendeeDAO attendeeDAO) {
+    public RatingResource(final SessionRatingDAO sessionRatingDAO, final AttendeeDAO attendeeDAO) {
         this.sessionRatingDAO = sessionRatingDAO;
         attendeeValidator = new AttendeeRequestValidator(attendeeDAO);
     }
 
     @POST
-    public SessionRating rateSession(SessionRating sessionRating) {
+    public SessionRating rateSession (SessionRating sessionRating) {
         String attendeeId = sessionRating.getAttendeeId();
-        
+
         attendeeValidator.validate(attendeeId);
 
         SessionRating rating = sessionRatingDAO.rateSession(sessionRating);
@@ -39,13 +39,13 @@ public class RatingResource {
     }
 
     @GET
-    public Collection<SessionRating> getAllSessionRatings() {
+    public Collection<SessionRating> getAllSessionRatings () {
         return sessionRatingDAO.getAllRatings();
     }
 
     @PUT
     @Path("{ratingId}")
-    public SessionRating updateRating(@PathParam("ratingId") String ratingId, SessionRating newRating) {
+    public SessionRating updateRating (@PathParam("ratingId") String ratingId, SessionRating newRating) {
         SessionRating original = getRating(ratingId);
         original.setSession(newRating.getSession());
         original.setRating(newRating.getRating());
@@ -59,14 +59,14 @@ public class RatingResource {
 
     @GET
     @Path("{ratingId}")
-    public SessionRating getRating(@PathParam("ratingId") String ratingId) {
-        return  sessionRatingDAO.getByRatingId(ratingId)
-                .orElseThrow(() -> new NotFoundException("Rating not found: " + ratingId));
+    public SessionRating getRating (@PathParam("ratingId") String ratingId) {
+        return sessionRatingDAO.getByRatingId(ratingId)
+                .orElseThrow( () -> new NotFoundException("Rating not found: " + ratingId));
     }
 
     @DELETE
     @Path("{ratingId}")
-    public void deleteRating(@PathParam("ratingId") String ratingId) {
+    public void deleteRating (@PathParam("ratingId") String ratingId) {
         SessionRating rating = getRating(ratingId);
         sessionRatingDAO.delete(rating);
     }

@@ -39,7 +39,7 @@ public class AttendeeResource {
     @PUT
     @Path("{id}")
     public Attendee updateAttendee (@PathParam("id") String id, Attendee attendee) {
-        
+
         return attendeeDAO.update(id, attendee)
                 .orElseThrow(NotFoundException::new);
     }

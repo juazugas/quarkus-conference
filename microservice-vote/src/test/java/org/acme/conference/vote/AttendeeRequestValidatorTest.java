@@ -61,7 +61,7 @@ public class AttendeeRequestValidatorTest {
 
     @Test
     public void testValidateThrowsBadRequestException () {
-        assertThrows(BadRequestException.class , () -> {
+        assertThrows(BadRequestException.class, () -> {
             validator.validate("ATT-INVALID-ID");
         });
     }
