@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import javax.inject.Inject;
+import org.bson.Document;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,8 @@ public class RatingResourceTest {
 
     @Test
     public void testGetAllSessionRatings () {
+        deleteAllSessionRatings();
+
         attendeeForge.create(RATING_ATTENDEE, "ATTENDEE-NAME");
         SessionRating rating = createDefault();
 
@@ -80,7 +83,7 @@ public class RatingResourceTest {
                 .put("/rate/" + rating.getRatingId())
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(rating.getRatingId()))
+                .body("ratingId", equalTo(rating.getRatingId()))
                 .body("session", equalTo(RATING_SESSION))
                 .body("attendeeId", equalTo(RATING_ATTENDEE))
                 .body("rating", equalTo(RATING_NEW_RATING));
@@ -95,7 +98,7 @@ public class RatingResourceTest {
                 .get("/rate/" + rating.getRatingId())
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(rating.getRatingId()))
+                .body("ratingId", equalTo(rating.getRatingId()))
                 .body("session", equalTo(RATING_SESSION))
                 .body("attendeeId", equalTo(RATING_ATTENDEE))
                 .body("rating", equalTo(RATING_RATING));
@@ -120,6 +123,12 @@ public class RatingResourceTest {
                 .post("/rate")
                 .thenReturn()
                 .as(SessionRating.class);
+    }
+
+    private void deleteAllSessionRatings () {
+        mongoClient.getDatabase("votes")
+                .getCollection("SessionRating")
+                .deleteMany(new Document());
     }
 
 }
