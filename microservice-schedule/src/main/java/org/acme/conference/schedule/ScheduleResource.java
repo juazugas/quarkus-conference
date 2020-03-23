@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -39,7 +41,21 @@ public class ScheduleResource {
     @Consumes("application/json")
     public Response add (final Schedule schedule) {
         final Schedule created = scheduleDAO.addSchedule(schedule);
-        return Response.created(URI.create("/" + created.getId()))
+        return Response.created(URI.create("/schedule/" + created.getId()))
+                .entity(created)
+                .build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes("application/json")
+    public Response update (@PathParam("id") final int id, final Schedule schedule) {
+        if (null == schedule) {
+            throw new BadRequestException();
+        }
+
+        final Schedule created = scheduleDAO.saveSchedule(id, schedule);
+        return Response.created(URI.create("/schedule/" + created.getId()))
                 .entity(created)
                 .build();
     }
